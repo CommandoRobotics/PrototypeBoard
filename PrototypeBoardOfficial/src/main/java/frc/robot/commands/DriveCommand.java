@@ -9,7 +9,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class DriveNormal extends CommandBase {
+public class DriveCommand extends CommandBase {
 
   DoubleSupplier ySpeed;
   DoubleSupplier xSpeed;
@@ -17,7 +17,7 @@ public class DriveNormal extends CommandBase {
   DriveSubsystem driveSubsystem;
 
   /** Creates a new DriveNormal. */
-  public DriveNormal(DoubleSupplier ySpeed, DoubleSupplier xSpeed, DoubleSupplier rotation, DriveSubsystem driveSubsystem) {
+  public DriveCommand(DoubleSupplier ySpeed, DoubleSupplier xSpeed, DoubleSupplier rotation, DriveSubsystem driveSubsystem) {
     this.ySpeed = ySpeed;
     this.xSpeed = xSpeed;
     this.rotation = rotation;

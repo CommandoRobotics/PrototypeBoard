@@ -7,8 +7,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.DriveFieldCentric;
-import frc.robot.commands.DriveNormal;
+import frc.robot.commands.DriveFieldCentricCommand;
+import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 
 /**
@@ -27,7 +27,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-      driveSubsystem.setDefaultCommand(new DriveFieldCentric(
+      driveSubsystem.setDefaultCommand(new DriveFieldCentricCommand(
       () -> -driverController.getLeftY(),
       driverController::getLeftX,
       () -> -driverController.getRightX(), driveSubsystem));
