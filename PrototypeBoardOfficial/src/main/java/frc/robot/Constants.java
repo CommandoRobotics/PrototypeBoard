@@ -14,10 +14,18 @@ package frc.robot;
  */
 public final class Constants {
 
+    // Rate limits
+    public static final double kMaxYAcceleration = 0.5;
+    public static final double kMaxXAcceleration = 0.5;
+    public static final double kMaxRotateAcceleration = 0.5;
+
+    // Motor ports
     public static final int fLeftPort = 1;
     public static final int fRightPort = 3;
     public static final int rLeftPort = 2;
     public static final int rRightPort = 4;
+
+    // Motor inversions
     public static final boolean fLeftInverted = true;
     public static final boolean fRightInverted = false;
     public static final boolean rLeftInverted = true;

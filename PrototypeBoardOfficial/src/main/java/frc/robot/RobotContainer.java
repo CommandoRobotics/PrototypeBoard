@@ -19,18 +19,28 @@ import frc.robot.subsystems.DriveSubsystem;
  */
 public class RobotContainer {
 
+  final boolean driveFieldConcentric = true;
+
   // Define the controllers
   XboxController driverController = new XboxController(0);
 
   // Define the subsystems
   DriveSubsystem driveSubsystem = new DriveSubsystem();
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    if(driveFieldConcentric) {
       driveSubsystem.setDefaultCommand(new DriveFieldCentricCommand(
       () -> -driverController.getLeftY(),
       driverController::getLeftX,
       () -> -driverController.getRightX(), driveSubsystem));
+    } else {
+      driveSubsystem.setDefaultCommand(new DriveCommand(
+      () -> -driverController.getLeftY(),
+      driverController::getLeftX,
+      () -> -driverController.getRightX(), driveSubsystem));
+    }
+    
   }
 
   /**

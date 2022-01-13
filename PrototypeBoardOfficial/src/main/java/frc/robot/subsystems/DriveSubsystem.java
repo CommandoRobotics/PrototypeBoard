@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
@@ -26,6 +27,11 @@ public class DriveSubsystem extends SubsystemBase {
 
   // Declare the NavX
   AHRS navX;
+
+  // Define the drive rate limiters
+  SlewRateLimiter yRateLimiter;
+  SlewRateLimiter xRateLimiter;
+  SlewRateLimiter rotateRateLimiter;
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
@@ -49,6 +55,10 @@ public class DriveSubsystem extends SubsystemBase {
     navX = new AHRS(SPI.Port.kMXP);
     navX.reset();
 
+    // Instantiate the rate limiters
+    yRateLimiter = new SlewRateLimiter(Constants.kMaxYAcceleration);
+    xRateLimiter = new SlewRateLimiter(Constants.kMaxXAcceleration);
+    rotateRateLimiter = new SlewRateLimiter(Constants.kMaxRotateAcceleration);
   }
 
   /**
@@ -119,6 +129,16 @@ public class DriveSubsystem extends SubsystemBase {
    * @param rotation The rotation input
    */
   public void driveCartesian(double ySpeed, double xSpeed, double rotation) {
+    drive.driveCartesian(yRateLimiter.calculate(ySpeed), xRateLimiter.calculate(xSpeed), rotateRateLimiter.calculate(rotation));
+  }
+
+    /**
+   * Drive using Cartesian coordinates
+   * @param ySpeed The forward/backward speed at which to drive
+   * @param xSpeed The strafe speed at which to drive
+   * @param rotation The rotation input
+   */
+  public void driveCartesianNoRateLimit(double ySpeed, double xSpeed, double rotation) {
     drive.driveCartesian(ySpeed, xSpeed, rotation);
   }
 
@@ -129,6 +149,16 @@ public class DriveSubsystem extends SubsystemBase {
    * @param rotation The rotation input
    */
   public void driveCartesianFieldCentric(double ySpeed, double xSpeed, double rotation) {
+    drive.driveCartesian(yRateLimiter.calculate(ySpeed), xRateLimiter.calculate(xSpeed), rotateRateLimiter.calculate(rotation), getOrientation());
+  }
+  
+  /**
+   * Drive field centrically using Cartesian coordinates
+   * @param ySpeed The forward/backward speed at which to drive
+   * @param xSpeed The strafe speed at which to drive
+   * @param rotation The rotation input
+   */
+  public void driveCartesianFieldCentricNoRateLimit(double ySpeed, double xSpeed, double rotation) {
     drive.driveCartesian(ySpeed, xSpeed, rotation, getOrientation());
   }
 
