@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Utils.AccelerationLimiter;
 
 public class DriveSubsystem extends SubsystemBase {
 
@@ -29,9 +30,10 @@ public class DriveSubsystem extends SubsystemBase {
   AHRS navX;
 
   // Define the drive rate limiters
-  SlewRateLimiter yRateLimiter;
-  SlewRateLimiter xRateLimiter;
-  SlewRateLimiter rotateRateLimiter;
+  AccelerationLimiter yRateLimiter;
+  AccelerationLimiter xRateLimiter;
+  AccelerationLimiter rotateRateLimiter;
+
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
@@ -56,9 +58,9 @@ public class DriveSubsystem extends SubsystemBase {
     navX.reset();
 
     // Instantiate the rate limiters
-    yRateLimiter = new SlewRateLimiter(Constants.kMaxYAcceleration);
-    xRateLimiter = new SlewRateLimiter(Constants.kMaxXAcceleration);
-    rotateRateLimiter = new SlewRateLimiter(Constants.kMaxRotateAcceleration);
+    yRateLimiter = new AccelerationLimiter(Constants.kMaxYAcceleration);
+    xRateLimiter = new AccelerationLimiter(Constants.kMaxXAcceleration);
+    rotateRateLimiter = new AccelerationLimiter(Constants.kMaxRotateAcceleration);
   }
 
   /**
