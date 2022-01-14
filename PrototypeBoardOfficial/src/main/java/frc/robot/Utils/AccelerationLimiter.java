@@ -7,9 +7,12 @@ import edu.wpi.first.util.WPIUtilJNI;
 
 public class AccelerationLimiter {
 
-    private final double rateLimit;
+
+    private double rateLimit;
     private double previousTime;
-    private double previousValue;
+    private double previousValue = 0;
+
+
     
     /**
      * Create a new AccelerationLimiter with the given rate limit
@@ -29,25 +32,23 @@ public class AccelerationLimiter {
         double currentTime = WPIUtilJNI.now() * 1e-6;
         double elapsedTime = currentTime-previousTime;
 
-        // Check if the robot needs to switch direction
-        boolean isInputSwitchingDirection = input*previousValue > 0;
+        double outputAdjustment = MathUtil.clamp(input-previousValue, -rateLimit*elapsedTime, rateLimit*elapsedTime);
 
-        if(!isInputSwitchingDirection && Math.abs(input) > previousValue) {
-            // The robot is accelerating without changing direction
-            double amountToChange = MathUtil.clamp(input-previousValue, elapsedTime * -rateLimit, elapsedTime * rateLimit);
-            previousValue += amountToChange;
+        boolean areInputAndPreviousSameSign = (input*previousValue) >= 0;
+
+        if(areInputAndPreviousSameSign && Math.abs(input) > Math.abs(previousValue)) {
             previousTime = currentTime;
+            previousValue += outputAdjustment;
             return previousValue;
-        } else if(Math.abs(input) <= Math.abs(previousValue)) {
-            // The robot is deaccelerating without changing direction
-            previousValue = input;
+        } else if(!areInputAndPreviousSameSign) {
             previousTime = currentTime;
+            previousValue = 0;
             return previousValue;
-        } else {
-            previousValue = input;
-            previousTime = currentTime;
-            return previousValue;
+        } else if(input == 0) {
+            previousValue = 0;
+            return 0;
         }
+        return 0;
     }
 
 }

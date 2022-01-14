@@ -15,9 +15,9 @@ package frc.robot;
 public final class Constants {
 
     // Rate limits
-    public static final double kMaxYAcceleration = 2;
-    public static final double kMaxXAcceleration = 2;
-    public static final double kMaxRotateAcceleration = 2;
+    public static final double kMaxYAcceleration = 0.5;
+    public static final double kMaxXAcceleration = 0.5;
+    public static final double kMaxRotateAcceleration = 0.5;
 
     // Motor ports
     public static final int fLeftPort = 1;
